@@ -1,6 +1,6 @@
 #include "sheetwidget.h"
 
-#include "charactersheet/charactersheet.h"
+#include "charactersheet.h"
 #include <QContextMenuEvent>
 
 SheetWidget::SheetWidget(QWidget* parent) : QQuickWidget(parent) {}
