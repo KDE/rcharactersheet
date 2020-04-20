@@ -6,11 +6,6 @@
 #include <QJsonObject>
 #include <QPixmap>
 
-#ifndef RCSE
-#include "network/networkmessagereader.h"
-#include "network/networkmessagewriter.h"
-#endif
-
 class ImageModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -48,6 +43,7 @@ public:
     void clear();
 
     void save(QJsonArray& array) const;
+    void load(const QJsonArray& array);
 
     void removeImageAt(const QModelIndex& index);
     void setPathFor(const QModelIndex& index, const QString& path);
@@ -59,11 +55,6 @@ public:
     void removeImage(int i);
     QPixmap pixmapFromKey(QString id);
     void reloadImage(const QModelIndex& index);
-
-#ifndef RCSE
-    void fill(NetworkMessageWriter& msg) const;
-    void read(NetworkMessageReader& msg);
-#endif
 
 signals:
     void backgroundSizeChanged();

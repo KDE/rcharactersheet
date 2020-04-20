@@ -138,6 +138,26 @@ void ImageModel::save(QJsonArray& array) const
     }
 }
 
+void ImageModel::load(const QJsonArray& array)
+{
+    beginResetModel();
+    for(auto ref : array)
+    {
+        auto obj= ref.toObject();
+        ImageInfo info;
+        auto bin= obj["bin"].toString();
+        QByteArray array= QByteArray::fromBase64(bin.toLocal8Bit());
+
+        info.pixmap.loadFromData(array);
+
+        info.key= obj["key"].toString();
+        info.isBackground= obj["isBg"].toBool();
+        info.filename= obj["filename"].toString(); // NOTICE hide this field from network
+        m_data.push_back(info);
+    }
+    endResetModel();
+}
+
 bool ImageModel::insertImage(const QPixmap& pix, const QString& key, const QString& filename, bool isBg)
 {
     auto rect= pix.rect();
@@ -267,31 +287,7 @@ void ImageModel::removeImage(int i)
     emit internalDataChanged();
 }
 
-void ImageModel::reloadImage(const QModelIndex& idx)
-{
-    if(!idx.isValid())
-        return;
-
-    auto row= idx.row();
-    qDebug() << "reload image" << row << m_data.size();
-    if(row < 0 || row >= m_data.size())
-        return;
-
-    qDebug() << "reload image" << row;
-    auto& info= m_data[static_cast<int>(row)];
-
-    QPixmap pix(info.filename);
-    if(pix.isNull())
-    {
-        qWarning() << "Can't open image: " << info.filename;
-        return;
-    }
-    qDebug() << "reload image" << row;
-    info.pixmap= pix;
-    emit dataChanged(idx, idx, QVector<int>() << Qt::DisplayRole);
-}
-
-#ifndef RCSE
+/*#ifndef RCSE
 void ImageModel::fill(NetworkMessageWriter& msg) const
 {
     msg.uint32(static_cast<unsigned int>(m_data.size()));
@@ -323,4 +319,4 @@ void ImageModel::read(NetworkMessageReader& msg)
         m_data.push_back(info);
     }
 }
-#endif
+#endif*/
