@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.16)
 
 project(charactersheet VERSION 1.10.0 DESCRIPTION "Manage charactersheet")
 option(CHARACTERSHEET_TESTS "enable tests compilation" OFF)
@@ -7,8 +7,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-set(QT_REQUIRED_VERSION "5.14.0")
-find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED COMPONENTS Core Test Gui Svg Qml Quick QuickWidgets WebEngineWidgets WebEngine)
+find_package(Qt6 COMPONENTS Core Test Gui Svg Qml Quick QuickWidgets WebEngineWidgets WebEngine REQUIRED)
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} result node)
